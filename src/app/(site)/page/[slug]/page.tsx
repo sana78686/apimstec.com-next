@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { getPageBySlug } from '@/lib/cms/server'
 import { absolutizeCmsHtmlServer, siteOriginFromEnv } from '@/lib/cms/html'
 import { JsonLdScript } from '@/components/cms/JsonLdScript'
+import ApimstecSiteHero from '@/components/marketing/ApimstecSiteHero'
 import { langPrefix } from '@/i18n/translations'
 import '@/styles/cms-page.css'
 
@@ -50,17 +51,23 @@ export default async function CmsDynamicPage({ params }: { params: Promise<{ slu
   const jsonLd = data?.json_ld
 
   return (
-    <article className="cms-page wrap">
+    <article className="cms-page">
       <JsonLdScript data={jsonLd} />
-      <header className="cms-page-header">
-        <h1 className="cms-page-title">{String(data?.title || slug)}</h1>
-      </header>
-      <div className="cms-page-content" dangerouslySetInnerHTML={{ __html: html }} />
-      <footer className="cms-page-footer">
-        <Link href="/" className="cms-page-back">
-          ← Back to home
-        </Link>
-      </footer>
+      <ApimstecSiteHero
+        bleed
+        tint="blue"
+        kicker="Apimstec"
+        title={String(data?.title || slug)}
+        titleId="cms-page-hero-title"
+      />
+      <div className="cms-page-dynamic-below wrap">
+        <div className="cms-page-content" dangerouslySetInnerHTML={{ __html: html }} />
+        <footer className="cms-page-footer">
+          <Link href="/" className="cms-page-back">
+            ← Back to home
+          </Link>
+        </footer>
+      </div>
     </article>
   )
 }

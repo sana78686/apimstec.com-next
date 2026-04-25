@@ -5,6 +5,7 @@ import { getBlogBySlug } from '@/lib/cms/server'
 import { absolutizeCmsHtmlServer, siteOriginFromEnv } from '@/lib/cms/html'
 import { resolveCmsMediaUrlWithOrigin } from '@/utils/cmsAssetUrl'
 import { JsonLdScript } from '@/components/cms/JsonLdScript'
+import ApimstecSiteHero from '@/components/marketing/ApimstecSiteHero'
 import { langPrefix } from '@/i18n/translations'
 import '@/styles/cms-page.css'
 
@@ -73,26 +74,38 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   }
 
   const title = String(data?.title || 'Blog')
+  const subtitle = String(
+    (data as { meta_description?: string; excerpt?: string })?.excerpt ||
+      (data as { meta_description?: string })?.meta_description ||
+      '',
+  ).trim()
   const origin = siteOriginFromEnv()
   const html = absolutizeCmsHtmlServer(String(data?.content || ''), origin)
   const jsonLd = data?.json_ld as { '@graph'?: unknown[] } | undefined
 
   return (
-    <article className="cms-page cms-blog wrap">
+    <article className="cms-page cms-blog">
       <JsonLdScript data={jsonLd} />
-      <header className="cms-blog-header">
-        <h1 className="cms-blog-title">{title}</h1>
-      </header>
-      <div className="cms-page-content cms-blog-content" dangerouslySetInnerHTML={{ __html: html }} />
-      <footer className="cms-page-footer">
-        <Link href="/blog" className="cms-page-back">
-          ← Blog
-        </Link>
-        <span className="cms-page-footer-sep"> · </span>
-        <Link href="/" className="cms-page-back">
-          Home
-        </Link>
-      </footer>
+      <ApimstecSiteHero
+        bleed
+        tint="navy"
+        kicker="Blog"
+        title={title}
+        subtitle={subtitle || undefined}
+        titleId="blog-post-hero-title"
+      />
+      <div className="cms-blog-below wrap">
+        <div className="cms-page-content cms-blog-content" dangerouslySetInnerHTML={{ __html: html }} />
+        <footer className="cms-page-footer">
+          <Link href="/blog" className="cms-page-back">
+            ← Blog
+          </Link>
+          <span className="cms-page-footer-sep"> · </span>
+          <Link href="/" className="cms-page-back">
+            Home
+          </Link>
+        </footer>
+      </div>
     </article>
   )
 }

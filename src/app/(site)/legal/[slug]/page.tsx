@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { getLegalPage } from '@/lib/cms/server'
 import { absolutizeCmsHtmlServer, siteOriginFromEnv } from '@/lib/cms/html'
 import { JsonLdScript } from '@/components/cms/JsonLdScript'
+import ApimstecSiteHero from '@/components/marketing/ApimstecSiteHero'
 import '@/styles/cms-page.css'
 
 const VALID = ['terms', 'privacy-policy', 'disclaimer', 'about-us', 'cookie-policy']
@@ -46,20 +47,26 @@ export default async function LegalPage({ params }: { params: Promise<{ slug: st
   const html = absolutizeCmsHtmlServer(String(data?.content || ''), origin)
 
   return (
-    <article className="cms-page wrap">
+    <article className="cms-page">
       <JsonLdScript data={data.json_ld} />
-      <header className="cms-page-header">
-        <h1 className="cms-page-title">{data.title || slug}</h1>
-      </header>
-      <div
-        className="cms-page-content legal-content-body"
-        dangerouslySetInnerHTML={{ __html: html }}
+      <ApimstecSiteHero
+        bleed
+        tint="slate"
+        kicker="Legal"
+        title={String(data?.title || slug)}
+        titleId="legal-hero-title"
       />
-      <footer className="cms-page-footer">
-        <Link href="/" className="cms-page-back">
-          ← Back to home
-        </Link>
-      </footer>
+      <div className="cms-page-legal-below wrap">
+        <div
+          className="cms-page-content legal-content-body"
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
+        <footer className="cms-page-footer">
+          <Link href="/" className="cms-page-back">
+            ← Back to home
+          </Link>
+        </footer>
+      </div>
     </article>
   )
 }

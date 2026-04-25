@@ -213,6 +213,7 @@ export default {
   },
   blog: {
     listTitle: 'Blog',
+    listEyebrow: 'Terbaru',
     listIntro: 'Artikel dan pembaruan terbaru.',
     readMore: 'Baca selengkapnya',
     noPosts: 'Belum ada posting blog.',

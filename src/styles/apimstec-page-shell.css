@@ -1,0 +1,71 @@
+/* Body + CTA below hero (hero styles: apimstec-hero.css + ApimstecSiteHero) */
+
+.apimstec-page {
+  max-width: var(--content-max-width, 1200px);
+  margin: 0 auto;
+  padding: 0 1.5rem 3.5rem;
+  width: 100%;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.apimstec-page-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.apimstec-page-section h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+.apimstec-page-section p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #3f3f46;
+}
+
+.apimstec-page-append {
+  margin-top: 0.5rem;
+}
+
+.apimstec-page-cta {
+  margin-top: 0.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.apimstec-page-cta a {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  color: #0066b3;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+.apimstec-page-cta a:hover {
+  text-decoration: underline;
+  color: #004d88;
+}
+
+a.apimstec-page-inline-link {
+  font-weight: 600;
+  color: #0066b3;
+  text-decoration: none;
+}
+a.apimstec-page-inline-link:hover {
+  text-decoration: underline;
+  color: #004d88;
+}
+
+@media (max-width: 640px) {
+  .apimstec-page {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}

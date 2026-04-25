@@ -1,17 +1,23 @@
-/* Contact page – two-column layout, form in card (iLovePDF-style) */
-.contact-page.wrap {
-  max-width: var(--content-max-width, 1200px);
-  margin: 0 auto;
-  padding: 2rem var(--content-padding-x, 1.5rem);
+/* Contact page – hero + two-column layout (hero: ApimstecSiteHero) */
+.contact-page {
   width: 100%;
-  box-sizing: border-box;
   min-height: 60vh;
 }
 
-.contact-page-loading,
-.contact-page-error {
+.contact-page .contact-page-grid.wrap {
+  max-width: var(--content-max-width, 1200px);
+  margin: 0 auto;
+  padding: 2rem var(--content-padding-x, 1.5rem) 2.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.contact-page-loading.wrap,
+.contact-page-error.wrap {
   color: var(--text-muted, #6b7280);
-  margin: 2rem 0;
+  margin: 2rem auto;
+  max-width: var(--content-max-width, 1200px);
+  padding: 0 var(--content-padding-x, 1.5rem);
 }
 
 .contact-page-error {
@@ -331,8 +337,8 @@
 }
 
 @media (max-width: 640px) {
-  .contact-page.wrap {
-    padding: 1.25rem var(--content-padding-x, 1rem);
+  .contact-page .contact-page-grid.wrap {
+    padding: 1.25rem var(--content-padding-x, 1rem) 2rem;
   }
 
   .contact-page-title {
@@ -345,8 +351,8 @@
 }
 
 @media (max-width: 380px) {
-  .contact-page.wrap {
-    padding: 1rem 0.75rem;
+  .contact-page .contact-page-grid.wrap {
+    padding: 1rem 0.75rem 1.5rem;
   }
 
   .contact-page-title {

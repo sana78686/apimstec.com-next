@@ -1,8 +1,9 @@
-.blog-list-page.wrap {
+.blog-list-page-inner.wrap {
   max-width: var(--content-max-width, 1200px);
   margin: 0 auto;
-  padding: 0 var(--content-padding-x, 1.5rem);
+  padding: 0 var(--content-padding-x, 1.5rem) 2.5rem;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .blog-list-loading,
@@ -173,8 +174,8 @@
 }
 
 @media (max-width: 380px) {
-  .blog-list-page.wrap {
-    padding: 0 0.75rem;
+  .blog-list-page-inner.wrap {
+    padding: 0 0.75rem 1.5rem;
   }
 
   .blog-list-title {

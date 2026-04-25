@@ -63,6 +63,54 @@ export function buildCompressPdfBreadcrumbItems(pathname, t) {
   if (rest === '/contact') {
     return [home, { label: t('contact.title') }]
   }
+
+  // Apimstec marketing (clear labels from nav)
+  if (rest === '/platform') {
+    return [home, { label: t('nav.platform') }]
+  }
+  if (rest === '/marketplace') {
+    return [home, { label: t('nav.marketplace') }]
+  }
+  if (rest === '/consultancy') {
+    return [home, { label: t('nav.consultancy') }]
+  }
+  if (rest === '/solutions') {
+    return [home, { label: t('nav.solutions') }]
+  }
+  if (rest === '/insights') {
+    return [home, { label: t('nav.insights') }]
+  }
+  if (rest === '/about') {
+    return [home, { label: t('nav.aboutUs') }]
+  }
+  if (rest === '/about/careers') {
+    return [home, { label: t('nav.aboutUs'), to: join('/about') }, { label: t('corporate.footerCareers') }]
+  }
+  if (rest === '/about/news') {
+    return [home, { label: t('nav.aboutUs'), to: join('/about') }, { label: t('corporate.footerNews') }]
+  }
+
+  // Mega menu children: /platform/…, /consultancy/…, /solutions/…, /about/…
+  const childM = /^\/(platform|consultancy|solutions|about)\/([^/]+)$/.exec(rest)
+  if (childM) {
+    const base = childM[1]
+    const slug = childM[2]
+    const sectionNav = {
+      platform: 'nav.platform',
+      consultancy: 'nav.consultancy',
+      solutions: 'nav.solutions',
+      about: 'nav.aboutUs',
+    }
+    const key = sectionNav[base]
+    if (key) {
+      return [
+        home,
+        { label: t(key), to: join(`/${base}`) },
+        { label: slugLabel(slug) || t('breadcrumb.page') },
+      ]
+    }
+  }
+
   if (rest.startsWith('/legal/')) {
     const slug = rest.slice('/legal/'.length).split('/')[0]
     return [

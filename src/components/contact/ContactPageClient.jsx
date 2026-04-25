@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useTranslation } from '@/i18n/useTranslation'
 import { getContactSettings, submitContactForm } from '@/lib/cms-client'
 import JsonLd from '@/components/JsonLd'
+import ApimstecSiteHero from '@/components/marketing/ApimstecSiteHero'
 import { getPreferredLang, supportedLangs, langPrefix } from '@/i18n/translations'
 import { usePathLang } from '@/hooks/usePathLang'
 import '@/styles/ContactPage.css'
@@ -107,17 +108,17 @@ export default function ContactPageClient() {
 
   if (loading) {
     return (
-      <div className="contact-page wrap">
-        <p className="contact-page-loading">Loading…</p>
+      <div className="contact-page">
+        <p className="contact-page-loading wrap">Loading…</p>
       </div>
     )
   }
 
   if (error) {
     return (
-      <div className="contact-page wrap">
-        <p className="contact-page-error">{error}</p>
-        <Link href={`${lp}/`} className="contact-page-back">
+      <div className="contact-page">
+        <p className="contact-page-error wrap">{error}</p>
+        <Link href={`${lp}/`} className="contact-page-back wrap">
           ← {t('contact.backHome')}
         </Link>
       </div>
@@ -125,12 +126,18 @@ export default function ContactPageClient() {
   }
 
   return (
-    <article className="contact-page wrap">
+    <article className="contact-page">
       <JsonLd data={settings?.json_ld} />
-      <div className="contact-page-grid">
+      <ApimstecSiteHero
+        bleed
+        tint="blue"
+        kicker={t('contact.pageKicker')}
+        title={t('contact.title')}
+        subtitle={t('contact.intro')}
+        titleId="contact-hero-title"
+      />
+      <div className="contact-page-grid wrap">
         <div className="contact-page-intro">
-          <h1 className="contact-page-title">{t('contact.title')}</h1>
-          <p className="contact-page-intro-text">{t('contact.intro')}</p>
           <div className="contact-page-details" aria-label={t('contact.detailsHeading')}>
             {contactDetailsVisible(settings) ? (
               <ul className="contact-details-list">
@@ -306,7 +313,7 @@ export default function ContactPageClient() {
           )}
         </div>
       </div>
-      <footer className="contact-page-footer">
+      <footer className="contact-page-footer wrap">
         <Link href={`${lp}/`} className="contact-page-back">
           ← {t('contact.backHome')}
         </Link>

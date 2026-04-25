@@ -14,18 +14,14 @@ export function normalizeSiteDomain(value) {
     .split('/')[0]
 }
 
-const API_FALLBACK_DEV = 'http://localhost:3000'
 const API_FALLBACK_PROD = 'https://app.apimstec.com'
-
-const isDev = process.env.NODE_ENV === 'development'
 
 /** Base URL of Laravel (no trailing slash). */
 export const CMS_API_BASE = String(
-  process.env.NEXT_PUBLIC_CMS_API_URL ||
-    (isDev ? API_FALLBACK_DEV : API_FALLBACK_PROD),
+  process.env.NEXT_PUBLIC_CMS_API_URL || API_FALLBACK_PROD,
 ).replace(/\/$/, '')
 
 /** Fallback when window is unavailable; browser code uses hostname when possible. */
 export const CMS_SITE_DOMAIN = normalizeSiteDomain(
-  process.env.NEXT_PUBLIC_SITE_DOMAIN || (isDev ? 'localhost' : 'apimstec.com'),
+  process.env.NEXT_PUBLIC_SITE_DOMAIN || 'apimstec.com',
 )

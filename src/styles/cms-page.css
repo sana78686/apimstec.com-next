@@ -7,6 +7,16 @@
   box-sizing: border-box;
 }
 
+.cms-page .cms-blog-below.wrap,
+.cms-page .cms-page-legal-below.wrap,
+.cms-page .cms-page-dynamic-below.wrap {
+  max-width: var(--content-max-width, 1200px);
+  margin: 0 auto;
+  padding: 0 var(--content-padding-x, 1.5rem) 2.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .cms-page-loading,
 .cms-page-error {
   color: var(--text-muted);
