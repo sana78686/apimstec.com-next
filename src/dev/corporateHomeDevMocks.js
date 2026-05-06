@@ -16,7 +16,7 @@ export const CORPORATE_HOME_DEV_MOCK_CARDS = [
     id: -101,
     title: 'Platform & integration',
     description:
-      'API-first building blocks for digital retail and finance.\nExplore the platform|/platform\nMarketplace|/marketplace',
+      'API-first building blocks for digital retail and finance.\nExplore services|/services\nMarketplace|/marketplace',
     icon: 'layers',
     sort_order: 1,
   },

@@ -197,14 +197,14 @@ export default function SiteLayoutClient({ children }: Props) {
             <div className="nav-mega-item-wrap">
               <button
                 type="button"
-                className={`nav-corporate-trigger ${corporateMegaKey === 'consultancy' ? 'nav-corporate-trigger--open' : ''} ${pathMatchesSection(pathname, 'consultancy') ? 'nav-corporate-trigger--section' : ''}`}
-                aria-expanded={corporateMegaKey === 'consultancy'}
+                className={`nav-corporate-trigger ${corporateMegaKey === 'hosting' ? 'nav-corporate-trigger--open' : ''} ${pathMatchesSection(pathname, 'hosting') ? 'nav-corporate-trigger--section' : ''}`}
+                aria-expanded={corporateMegaKey === 'hosting'}
                 aria-haspopup="true"
-                onClick={() => openMega('consultancy')}
+                onClick={() => openMega('hosting')}
               >
-                {t('nav.consultancy')}
+                {t('nav.hosting')}
                 <span className="nav-corporate-chevron" aria-hidden>
-                  {corporateMegaKey === 'consultancy' ? '▲' : '▼'}
+                  {corporateMegaKey === 'hosting' ? '▲' : '▼'}
                 </span>
               </button>
             </div>

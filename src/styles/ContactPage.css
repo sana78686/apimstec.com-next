@@ -2,12 +2,197 @@
 .contact-page {
   width: 100%;
   min-height: 60vh;
+  --contact-accent: #0066b3;
+  --contact-accent-hover: #005291;
+  --contact-accent-soft: rgba(0, 102, 179, 0.12);
 }
 
-.contact-page .contact-page-grid.wrap {
+/* Same centered column as Marketplace (`ApimstecPageShell` / `.apimstec-page`) so breadcrumbs + hero line up */
+.contact-page-shell {
   max-width: var(--content-max-width, 1200px);
   margin: 0 auto;
-  padding: 2rem var(--content-padding-x, 1.5rem) 2.5rem;
+  padding: 0 var(--content-padding-x, 1.5rem) 3.5rem;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.contact-page--split {
+  background: #f8fafc;
+}
+
+.contact-page-shell--hero-flush {
+  padding-bottom: 0;
+}
+
+.contact-page-board {
+  background: #eff3f8;
+  padding: clamp(2rem, 4vw, 3rem) 0 clamp(2.5rem, 5vw, 4rem);
+}
+
+.contact-page-shell--board {
+  padding-bottom: 0;
+}
+
+.contact-page-sidebar {
+  padding: 0.35rem 0;
+}
+
+.contact-sidebar-heading {
+  margin: 0 0 1.35rem;
+  font-size: clamp(1.25rem, 2.5vw, 1.45rem);
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+.contact-info-rows {
+  list-style: none;
+  margin: 0 0 2.25rem;
+  padding: 0;
+}
+
+.contact-info-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1.4rem;
+}
+
+.contact-info-row:last-child {
+  margin-bottom: 0;
+}
+
+.contact-info-icon {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  background: var(--contact-accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-info-row .contact-info-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+  margin-bottom: 0.2rem;
+}
+
+.contact-info-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.contact-info-value:hover {
+  color: var(--contact-accent-hover);
+  text-decoration: underline;
+}
+
+.contact-info-value--multiline {
+  display: block;
+  white-space: pre-wrap;
+  font-weight: 500;
+}
+
+.contact-why-block {
+  padding-top: 0.5rem;
+}
+
+.contact-why-heading {
+  margin: 0 0 1rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.contact-why-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-why-list li {
+  position: relative;
+  padding-left: 1.65rem;
+  margin-bottom: 0.7rem;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #475569;
+}
+
+.contact-why-list li:last-child {
+  margin-bottom: 0;
+}
+
+.contact-why-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--contact-accent);
+  font-weight: 800;
+}
+
+.contact-form-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: clamp(1.75rem, 4vw, 2.35rem);
+  box-shadow: 0 14px 44px rgba(15, 23, 42, 0.1);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.contact-form-card-title {
+  margin: 0 0 0.45rem;
+  font-size: clamp(1.45rem, 3vw, 1.75rem);
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.03em;
+}
+
+.contact-form-card-sub {
+  margin: 0 0 1.65rem;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #64748b;
+}
+
+.contact-form-field {
+  margin-bottom: 1.15rem;
+}
+
+.contact-form-row--half {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.15rem;
+}
+
+.contact-form--card .contact-form-submit {
+  border-radius: 999px;
+  padding: 0.95rem 1.5rem;
+  margin-top: 0.35rem;
+}
+
+.contact-page-grid--split {
+  gap: clamp(1.75rem, 4vw, 3rem);
+}
+
+.contact-page-shell .apimstec-site-hero {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.contact-page-shell .contact-page-grid {
+  margin: 0;
+  padding: 2rem 0 2.5rem;
   width: 100%;
   box-sizing: border-box;
 }
@@ -32,8 +217,18 @@
   margin-bottom: 2rem;
 }
 
-.contact-page-intro {
-  padding-top: 0.5rem;
+.contact-page-intro-panel {
+  background: var(--bg-header, #fff);
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
+  padding: 1.75rem 2rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.contact-page-intro-panel .contact-page-details {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
 }
 
 .contact-page-title {
@@ -88,12 +283,14 @@
 }
 
 .contact-details-link {
-  color: var(--accent-red, #e03d3d);
+  color: var(--contact-accent);
   text-decoration: none;
   word-break: break-word;
+  font-weight: 500;
 }
 
 .contact-details-link:hover {
+  color: var(--contact-accent-hover);
   text-decoration: underline;
 }
 
@@ -155,9 +352,9 @@
 .contact-page-form-wrap {
   background: var(--bg-header, #fff);
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
   padding: 2rem;
-  border: 1px solid var(--border-light, #e5e7eb);
+  border: 1px solid rgba(15, 23, 42, 0.08);
 }
 
 /* Form */
@@ -178,7 +375,7 @@
 }
 
 .contact-form-required {
-  color: var(--accent-red, #e03d3d);
+  color: var(--contact-accent);
 }
 
 .contact-form-input,
@@ -200,8 +397,8 @@
 .contact-form-select:focus,
 .contact-form-textarea:focus {
   outline: none;
-  border-color: var(--accent-red, #e03d3d);
-  box-shadow: 0 0 0 2px rgba(224, 61, 61, 0.15);
+  border-color: var(--contact-accent);
+  box-shadow: 0 0 0 3px var(--contact-accent-soft);
 }
 
 .contact-form-input::placeholder,
@@ -238,16 +435,18 @@
   width: 1.1rem;
   height: 1.1rem;
   flex-shrink: 0;
-  accent-color: var(--accent-red, #e03d3d);
+  accent-color: var(--contact-accent);
 }
 
 .contact-form-legal-link {
-  color: var(--accent-red, #e03d3d);
+  color: var(--contact-accent);
   text-decoration: none;
+  font-weight: 600;
 }
 
 .contact-form-legal-link:hover {
   text-decoration: underline;
+  color: var(--contact-accent-hover);
 }
 
 .contact-form-error {
@@ -259,20 +458,24 @@
 
 .contact-form-submit {
   width: 100%;
-  padding: 0.75rem 1.5rem;
+  padding: 0.85rem 1.5rem;
   font-size: 1rem;
   font-weight: 600;
   color: #fff;
-  background: var(--accent-red, #e03d3d);
+  background: var(--contact-accent);
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   margin-top: 0.5rem;
-  transition: background 0.2s, opacity 0.2s;
+  transition: background 0.2s, opacity 0.2s, transform 0.15s;
 }
 
 .contact-form-submit:hover:not(:disabled) {
-  background: var(--accent-red-hover, #c93535);
+  background: var(--contact-accent-hover);
+}
+
+.contact-form-submit:active:not(:disabled) {
+  transform: translateY(1px);
 }
 
 .contact-form-submit:disabled {
@@ -295,7 +498,7 @@
 
 .contact-form-success-again {
   font-size: 0.9375rem;
-  color: var(--accent-red);
+  color: var(--contact-accent);
   background: none;
   border: none;
   cursor: pointer;
@@ -304,7 +507,7 @@
 }
 
 .contact-form-success-again:hover {
-  color: var(--accent-red-hover, #c93535);
+  color: var(--contact-accent-hover);
 }
 
 .contact-page-footer {
@@ -315,13 +518,14 @@
 
 .contact-page-back {
   font-size: 0.9375rem;
-  color: var(--accent-red, #e03d3d);
+  color: var(--contact-accent);
   text-decoration: none;
+  font-weight: 600;
 }
 
 .contact-page-back:hover {
   text-decoration: underline;
-  color: var(--accent-red-hover, #c93535);
+  color: var(--contact-accent-hover);
 }
 
 /* Responsive: stack on small screens */
@@ -331,14 +535,36 @@
     gap: 2rem;
   }
 
+  .contact-form-row--half {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .contact-form-row--half .contact-form-field:last-child {
+    margin-bottom: 0;
+  }
+
   .contact-page-form-wrap {
     padding: 1.5rem;
+  }
+
+  .contact-form-card {
+    padding: 1.5rem;
+  }
+
+  .contact-page-intro-panel {
+    padding: 1.35rem 1.25rem;
   }
 }
 
 @media (max-width: 640px) {
-  .contact-page .contact-page-grid.wrap {
-    padding: 1.25rem var(--content-padding-x, 1rem) 2rem;
+  .contact-page-shell {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .contact-page-shell .contact-page-grid {
+    padding: 1.25rem 0 2rem;
   }
 
   .contact-page-title {
@@ -351,8 +577,8 @@
 }
 
 @media (max-width: 380px) {
-  .contact-page .contact-page-grid.wrap {
-    padding: 1rem 0.75rem 1.5rem;
+  .contact-page-shell .contact-page-grid {
+    padding: 1rem 0 1.5rem;
   }
 
   .contact-page-title {

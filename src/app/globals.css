@@ -37,6 +37,12 @@ body {
   min-height: 100vh;
 }
 
+/* Default reading size for paragraphs; headings use their own rules. Smaller UI labels override via classes (e.g. hero eyebrow, footer). */
+p {
+  font-size: 18px;
+  line-height: 1.65;
+}
+
 a {
   font-weight: 500;
   color: #1a1a1a;

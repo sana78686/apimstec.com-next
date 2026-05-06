@@ -414,16 +414,46 @@ export function getContactSettings(locale) {
 }
 
 /**
- * Submit contact form. Email is sent to the address set in CMS Content Manager.
+ * Submit contact form.
+ * Default: POST /api/contact (Next.js sends mail via SMTP — see .env.example).
+ * Set NEXT_PUBLIC_CONTACT_SUBMIT_MODE=cms to use Laravel CMS `/contact/send` instead.
  * @param {{ name: string, email: string, subject: string, message: string, accepts_terms: boolean }} data
  * @param {string} [locale]
  */
 export function submitContactForm(data, locale) {
-  return request('/contact/send', {
+  const mode = String(process.env.NEXT_PUBLIC_CONTACT_SUBMIT_MODE ?? 'next').toLowerCase()
+  if (mode === 'cms') {
+    return request('/contact/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+      locale,
+    })
+  }
+
+  if (typeof window === 'undefined') {
+    return Promise.reject(new Error('submitContactForm must run in the browser'))
+  }
+
+  return fetch(`${window.location.origin}/api/contact`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-    locale,
+  }).then(async (res) => {
+    let json = {}
+    try {
+      json = await res.json()
+    } catch {
+      /* ignore */
+    }
+    if (!res.ok) {
+      const msg =
+        typeof json.error === 'string'
+          ? json.error
+          : res.statusText || 'Could not send message'
+      throw new Error(msg)
+    }
+    return json
   })
 }
 

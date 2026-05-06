@@ -3,9 +3,9 @@ import ApimstecPageShell from '@/components/marketing/ApimstecPageShell'
 import { getApimstecPage } from '@/lib/apimstecStaticPages'
 import { apimstecPageMetadata } from '@/lib/apimstecPageMeta'
 
-const p = getApimstecPage('consultancy')
-export const metadata: Metadata = apimstecPageMetadata(p, '/consultancy')
+const p = getApimstecPage('services')
+export const metadata: Metadata = apimstecPageMetadata(p, '/services')
 
-export default function ConsultancyPage() {
+export default function ServicesPage() {
   return <ApimstecPageShell page={p} />
 }

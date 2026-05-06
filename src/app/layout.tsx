@@ -20,13 +20,10 @@ const metadataBase = new URL(siteUrl.endsWith('/') ? siteUrl : `${siteUrl}/`)
 export const metadata: Metadata = {
   metadataBase,
   title: { default: 'Apimstec', template: '%s | Apimstec' },
-  description: 'Apimstec — digital solutions and platform engineering.',
+  description: 'Apimstec — IT company: software, apps, and simple explanations.',
   applicationName: 'Apimstec',
   icons: {
-    icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon.png', type: 'image/png', sizes: '32x32' },
-    ],
+    icon: [{ url: '/favicon.png', type: 'image/png' }],
     apple: '/favicon.png',
     shortcut: '/favicon.png',
   },
@@ -47,6 +44,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    images: ['/favicon.png'],
   },
 }
 

@@ -455,10 +455,10 @@
 }
 
 .landing-card-desc {
-  font-size: 0.9rem;
+  font-size: 18px;
   color: var(--text-secondary);
   margin: 0;
-  line-height: 1.45;
+  line-height: 1.65;
 }
 
 /* How it works steps */
@@ -510,10 +510,10 @@
 }
 
 .landing-step-desc {
-  font-size: 0.9rem;
+  font-size: 18px;
   color: var(--text-secondary);
   margin: 0;
-  line-height: 1.4;
+  line-height: 1.65;
 }
 
 /* FAQ — responsive card grid; answers render CMS HTML */
@@ -1599,8 +1599,11 @@
 }
 
 .header--corporate {
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: 1000;
+  align-self: flex-start;
+  width: 100%;
 }
 
 .home-page--corporate .main.cms-main {

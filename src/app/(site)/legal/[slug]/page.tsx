@@ -5,9 +5,28 @@ import { getLegalPage } from '@/lib/cms/server'
 import { absolutizeCmsHtmlServer, siteOriginFromEnv } from '@/lib/cms/html'
 import { JsonLdScript } from '@/components/cms/JsonLdScript'
 import ApimstecSiteHero from '@/components/marketing/ApimstecSiteHero'
+import type { ApimstecSiteHeroTint } from '@/components/marketing/ApimstecSiteHero'
+import '@/styles/site-marketing-shell.css'
 import '@/styles/cms-page.css'
 
 const VALID = ['terms', 'privacy-policy', 'disclaimer', 'about-us', 'cookie-policy']
+
+function legalHeroAccent(slug: string): { tint: ApimstecSiteHeroTint; kicker: string } {
+  switch (slug) {
+    case 'terms':
+      return { tint: 'blue', kicker: 'Terms' }
+    case 'privacy-policy':
+      return { tint: 'teal', kicker: 'Privacy' }
+    case 'disclaimer':
+      return { tint: 'slate', kicker: 'Disclaimer' }
+    case 'about-us':
+      return { tint: 'navy', kicker: 'About' }
+    case 'cookie-policy':
+      return { tint: 'violet', kicker: 'Cookies' }
+    default:
+      return { tint: 'slate', kicker: 'Legal' }
+  }
+}
 
 export const revalidate = 60
 
@@ -45,27 +64,24 @@ export default async function LegalPage({ params }: { params: Promise<{ slug: st
 
   const origin = siteOriginFromEnv()
   const html = absolutizeCmsHtmlServer(String(data?.content || ''), origin)
+  const { tint, kicker } = legalHeroAccent(slug)
 
   return (
     <article className="cms-page">
       <JsonLdScript data={data.json_ld} />
-      <ApimstecSiteHero
-        bleed
-        tint="slate"
-        kicker="Legal"
-        title={String(data?.title || slug)}
-        titleId="legal-hero-title"
-      />
-      <div className="cms-page-legal-below wrap">
-        <div
-          className="cms-page-content legal-content-body"
-          dangerouslySetInnerHTML={{ __html: html }}
-        />
-        <footer className="cms-page-footer">
-          <Link href="/" className="cms-page-back">
-            ← Back to home
-          </Link>
-        </footer>
+      <div className="site-marketing-shell">
+        <ApimstecSiteHero tint={tint} kicker={kicker} title={String(data?.title || slug)} titleId="legal-hero-title" />
+        <div className="cms-page-legal-below">
+          <div
+            className="cms-page-content legal-content-body"
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
+          <footer className="cms-page-footer">
+            <Link href="/" className="cms-page-back">
+              ← Back to home
+            </Link>
+          </footer>
+        </div>
       </div>
     </article>
   )

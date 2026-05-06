@@ -7,6 +7,7 @@ import { resolveCmsMediaUrlWithOrigin } from '@/utils/cmsAssetUrl'
 import { JsonLdScript } from '@/components/cms/JsonLdScript'
 import ApimstecSiteHero from '@/components/marketing/ApimstecSiteHero'
 import { langPrefix } from '@/i18n/translations'
+import '@/styles/site-marketing-shell.css'
 import '@/styles/cms-page.css'
 
 export const revalidate = 60
@@ -86,25 +87,26 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   return (
     <article className="cms-page cms-blog">
       <JsonLdScript data={jsonLd} />
-      <ApimstecSiteHero
-        bleed
-        tint="navy"
-        kicker="Blog"
-        title={title}
-        subtitle={subtitle || undefined}
-        titleId="blog-post-hero-title"
-      />
-      <div className="cms-blog-below wrap">
-        <div className="cms-page-content cms-blog-content" dangerouslySetInnerHTML={{ __html: html }} />
-        <footer className="cms-page-footer">
-          <Link href="/blog" className="cms-page-back">
-            ← Blog
-          </Link>
-          <span className="cms-page-footer-sep"> · </span>
-          <Link href="/" className="cms-page-back">
-            Home
-          </Link>
-        </footer>
+      <div className="site-marketing-shell">
+        <ApimstecSiteHero
+          tint="indigo"
+          kicker="Blog"
+          title={title}
+          subtitle={subtitle || undefined}
+          titleId="blog-post-hero-title"
+        />
+        <div className="cms-blog-below">
+          <div className="cms-page-content cms-blog-content" dangerouslySetInnerHTML={{ __html: html }} />
+          <footer className="cms-page-footer">
+            <Link href="/blog" className="cms-page-back">
+              ← Blog
+            </Link>
+            <span className="cms-page-footer-sep"> · </span>
+            <Link href="/" className="cms-page-back">
+              Home
+            </Link>
+          </footer>
+        </div>
       </div>
     </article>
   )

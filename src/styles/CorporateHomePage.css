@@ -62,7 +62,7 @@
 }
 
 .corporate-home-subtitle {
-  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  font-size: 18px;
   line-height: 1.65;
   color: #475569;
   margin: 0 0 1.75rem;
@@ -295,8 +295,8 @@
 }
 
 .corporate-home-cms-stack .landing-card-desc--etsy {
-  font-size: 0.8125rem;
-  line-height: 1.5;
+  font-size: 18px;
+  line-height: 1.65;
   color: #64748b;
   margin: 0;
 }

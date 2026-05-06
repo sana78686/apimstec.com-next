@@ -5,6 +5,7 @@ import { siteOriginFromEnv } from '@/lib/cms/html'
 import { translations, langPrefix } from '@/i18n/translations'
 import BlogCardCover from '@/components/blog/BlogCardCover'
 import ApimstecSiteHero from '@/components/marketing/ApimstecSiteHero'
+import '@/styles/site-marketing-shell.css'
 import '@/styles/BlogListPage.css'
 
 type Locale = 'id' | 'en'
@@ -54,55 +55,56 @@ export async function BlogListView({ locale }: { locale: Locale }) {
   return (
     <article className="blog-list-page">
       <JsonLdScript data={jsonLd} />
-      <ApimstecSiteHero
-        bleed
-        tint="teal"
-        kicker={b.listEyebrow}
-        title={b.listTitle}
-        subtitle={b.listIntro}
-        titleId="blog-list-hero-title"
-      />
-      <div className="blog-list-page-inner wrap">
-      {blogs.length === 0 ? (
-        <div className="blog-list-empty-state" role="status" aria-live="polite">
-          <h2 className="blog-list-empty-title">{b.emptyTitle}</h2>
-          <p className="blog-list-empty-text">{b.emptyBody}</p>
+      <div className="site-marketing-shell">
+        <ApimstecSiteHero
+          tint="teal"
+          kicker={b.listEyebrow}
+          title={b.listTitle}
+          subtitle={b.listIntro}
+          titleId="blog-list-hero-title"
+        />
+        <div className="blog-list-page-body">
+          {blogs.length === 0 ? (
+            <div className="blog-list-empty-state" role="status" aria-live="polite">
+              <h2 className="blog-list-empty-title">{b.emptyTitle}</h2>
+              <p className="blog-list-empty-text">{b.emptyBody}</p>
+            </div>
+          ) : (
+            <div className="blog-list-grid">
+              {blogs.map((post) => (
+                <Link
+                  key={post.id}
+                  href={`${lp}/blog/${encodeURIComponent(post.slug)}`}
+                  className="blog-card"
+                >
+                  <div className="blog-card-image-wrap">
+                    <BlogCardCover
+                      src={post.og_image || post.image}
+                      title={post.title}
+                      siteOrigin={origin}
+                    />
+                  </div>
+                  <div className="blog-card-body">
+                    {post.published_at && (
+                      <time className="blog-card-date" dateTime={post.published_at}>
+                        {formatDate(post.published_at)}
+                      </time>
+                    )}
+                    <h2 className="blog-card-title">{post.title}</h2>
+                    {post.excerpt && <p className="blog-card-excerpt">{post.excerpt}</p>}
+                    <span className="blog-card-link">{b.readMore} →</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
-      ) : (
-        <div className="blog-list-grid">
-          {blogs.map((post) => (
-            <Link
-              key={post.id}
-              href={`${lp}/blog/${encodeURIComponent(post.slug)}`}
-              className="blog-card"
-            >
-              <div className="blog-card-image-wrap">
-                <BlogCardCover
-                  src={post.og_image || post.image}
-                  title={post.title}
-                  siteOrigin={origin}
-                />
-              </div>
-              <div className="blog-card-body">
-                {post.published_at && (
-                  <time className="blog-card-date" dateTime={post.published_at}>
-                    {formatDate(post.published_at)}
-                  </time>
-                )}
-                <h2 className="blog-card-title">{post.title}</h2>
-                {post.excerpt && <p className="blog-card-excerpt">{post.excerpt}</p>}
-                <span className="blog-card-link">{b.readMore} →</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      )}
+        <footer className="blog-list-footer">
+          <Link href={`${lp}/`} className="blog-list-back">
+            ← {b.backHome}
+          </Link>
+        </footer>
       </div>
-      <footer className="blog-list-footer wrap">
-        <Link href={`${lp}/`} className="blog-list-back">
-          ← {b.backHome}
-        </Link>
-      </footer>
     </article>
   )
 }

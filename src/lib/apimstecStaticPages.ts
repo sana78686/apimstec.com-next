@@ -18,26 +18,27 @@ export type ApimstecStaticPage = {
 }
 
 const pages: Record<string, ApimstecStaticPage> = {
-  platform: {
-    shortTitle: 'Platform',
+  services: {
+    shortTitle: 'Services',
     description:
-      'Apimstec builds a connected software platform so your teams can work in one place with less manual work.',
-    kicker: 'What we build',
-    title: 'A platform you can grow with',
-    subtitle: 'We connect your tools, data, and workflows. You get fewer mistakes and a clearer view of the business.',
+      'Apimstec is an IT company. Here you can browse what we do—from AI and apps to automation and data—in everyday words.',
+    kicker: 'Services',
+    title: 'Services we offer',
+    subtitle:
+      'We build and run technology for businesses: smart features, software, helpers that answer questions, and clear reports from your numbers.',
     heroTint: 'navy',
     sections: [
       {
-        heading: 'What “platform” means here',
-        body: 'It is a set of software building blocks. We can start small, then add new parts when you are ready. You do not need to replace everything on day one.',
+        heading: 'How to read these pages',
+        body: 'Pick a topic below or from the menu. Each page explains what the service is, what we actually do for clients, and how to reach us without memorizing tech terms.',
       },
       {
-        heading: 'How we help you',
-        body: 'We design APIs, data flows, and security so your apps talk to each other. We can host in the cloud and help you meet basic rules in your industry.',
+        heading: 'Who we are',
+        body: 'We are an IT company. We write software, ship phone and web apps, connect systems, and help you understand data. If you need your website or marketing touched, we can help there too.',
       },
       {
-        heading: 'Good fit for you if…',
-        body: 'You want one clear path for your digital work. You are tired of copy-paste between systems, or you need a plan before you build more mobile apps and SaaS features.',
+        heading: 'Want to talk?',
+        body: 'Use the contact page and describe your goal in plain language. We answer the same way and suggest a sensible first step.',
       },
     ],
   },
@@ -46,7 +47,7 @@ const pages: Record<string, ApimstecStaticPage> = {
     description: 'Find tools and add-ons from Apimstec and partners to help your team and your website.',
     kicker: 'Add-ons and tools',
     title: 'Marketplace',
-    subtitle: 'A simple place to find extra tools, integrations, and services that work with our platform.',
+    subtitle: 'A simple place to find extra tools and add-ons that plug into what we already built for you.',
     heroTint: 'blue',
     sections: [
       {
@@ -59,43 +60,51 @@ const pages: Record<string, ApimstecStaticPage> = {
       },
     ],
   },
-  consultancy: {
-    shortTitle: 'Consultancy',
-    description: 'Apimstec helps you plan and deliver software, mobile, SaaS, and digital projects in simple steps.',
-    kicker: 'Guidance, not jargon',
-    title: 'Consulting that stays practical',
-    subtitle: 'We help you turn ideas into a clear plan, then we stay with you through build and launch.',
+  hosting: {
+    shortTitle: 'Hosting',
+    description:
+      'Apimstec offers web, cloud, VPS, and WordPress hosting—with Plesk as the control panel on every plan.',
+    kicker: 'Host and deploy',
+    title: 'Hosting built for clarity',
+    subtitle:
+      'Pick the capacity that fits—shared, scalable cloud, VPS, or WordPress-tuned stacks. You always get Plesk to manage sites, SSL, mail, and backups without juggling raw server panels alone.',
     heroTint: 'teal',
     sections: [
       {
-        heading: 'What we do first',
-        body: 'We listen, write down the goal in plain English, and list risks and costs early. You always know the next small step before we write a lot of code.',
+        heading: 'Plans that map to real needs',
+        body: 'Compare four paths below: Web hosting for typical sites, Cloud hosting when traffic spikes matter, VPS hosting when you want isolated resources, and WordPress hosting tuned for speed and safer updates. There is no separate “Plesk product”—Plesk is the hosting control panel we include so your team can manage domains, files, databases, and restore points in one familiar UI.',
       },
       {
-        heading: 'Areas we often help with',
-        body: 'Mobile app planning, SaaS product design, SEO and content strategy for your site, and marketing setup that does not need a full-time expert on day one.',
+        heading: 'WordPress hosting',
+        body: 'WordPress plans focus on fast stacks, thoughtful caching defaults, and practical guidance on plugins and updates so marketing teams keep publishing instead of fighting mystery errors.',
       },
       {
-        heading: 'How we work with your team',
-        body: 'We can coach your people, or build with you. Reports are short and use words everyone can read.',
+        heading: 'Talk to Apimstec',
+        body: 'Use the contact page with your domain, rough traffic, and whether you are migrating an existing site. We suggest a realistic tier and migration checklist before you pay for capacity you will not use.',
       },
     ],
   },
   solutions: {
     shortTitle: 'Solutions',
-    description: 'See how Apimstec helps teams in your space with software, SaaS, and digital projects.',
-    kicker: 'By industry and need',
-    title: 'Solutions for real teams',
-    subtitle: 'We group our work by what you actually do, not by a long list of buzzwords.',
+    description:
+      'Apimstec delivers app development, game development, software builds, digital marketing, and e-commerce—each explained without hype.',
+    kicker: 'Solutions',
+    title: 'Solutions we ship',
+    subtitle:
+      'Pick a track below: mobile apps, games, custom software, growth marketing, or online selling. Every page tells you what we actually do.',
     heroTint: 'navy',
     sections: [
       {
-        heading: 'Built around your work',
-        body: 'Whether you run a small business or a growing company, we map software to the jobs people do every day.',
+        heading: 'Built for busy owners',
+        body: 'These five paths cover how most clients find us. You might need one or several over time—many teams start with an app or shop, then add SEO and content once the product is live.',
       },
       {
-        heading: 'SaaS and mobile in one story',
-        body: 'Many clients want a web app for staff and a mobile app for customers. We make sure both match the same data and the same simple story on your website.',
+        heading: 'Simple words, clear scope',
+        body: 'We are an IT company, but we write like humans. Expect honest timelines, visible milestones, and pricing ranges discussed early.',
+      },
+      {
+        heading: 'Tell us your priority',
+        body: 'Use the contact page with a short note about your market and deadline. We route you to the right squad inside Apimstec.',
       },
     ],
   },

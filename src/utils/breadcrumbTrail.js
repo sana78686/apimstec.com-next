@@ -65,14 +65,14 @@ export function buildCompressPdfBreadcrumbItems(pathname, t) {
   }
 
   // Apimstec marketing (clear labels from nav)
-  if (rest === '/platform') {
+  if (rest === '/services') {
     return [home, { label: t('nav.platform') }]
   }
   if (rest === '/marketplace') {
     return [home, { label: t('nav.marketplace') }]
   }
-  if (rest === '/consultancy') {
-    return [home, { label: t('nav.consultancy') }]
+  if (rest === '/hosting') {
+    return [home, { label: t('nav.hosting') }]
   }
   if (rest === '/solutions') {
     return [home, { label: t('nav.solutions') }]
@@ -90,14 +90,14 @@ export function buildCompressPdfBreadcrumbItems(pathname, t) {
     return [home, { label: t('nav.aboutUs'), to: join('/about') }, { label: t('corporate.footerNews') }]
   }
 
-  // Mega menu children: /platform/…, /consultancy/…, /solutions/…, /about/…
-  const childM = /^\/(platform|consultancy|solutions|about)\/([^/]+)$/.exec(rest)
+  // Mega menu children: /services/…, /hosting/…, /solutions/…, /about/…
+  const childM = /^\/(services|hosting|solutions|about)\/([^/]+)$/.exec(rest)
   if (childM) {
     const base = childM[1]
     const slug = childM[2]
     const sectionNav = {
-      platform: 'nav.platform',
-      consultancy: 'nav.consultancy',
+      services: 'nav.platform',
+      hosting: 'nav.hosting',
       solutions: 'nav.solutions',
       about: 'nav.aboutUs',
     }

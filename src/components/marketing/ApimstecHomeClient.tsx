@@ -50,12 +50,12 @@ export default function ApimstecHomeClient({
 
   const features = [
     {
-      to: `${base}/platform`,
+      to: `${base}/services`,
       title: t('corporate.feature1Title'),
       body: t('corporate.feature1Body'),
     },
     {
-      to: `${base}/consultancy`,
+      to: `${base}/hosting`,
       title: t('corporate.feature2Title'),
       body: t('corporate.feature2Body'),
     },
@@ -80,7 +80,7 @@ export default function ApimstecHomeClient({
             <Link href={`${base}/contact`} className="corporate-home-btn corporate-home-btn--primary">
               {t('corporate.ctaContact')}
             </Link>
-            <Link href={`${base}/platform`} className="corporate-home-btn corporate-home-btn--ghost">
+            <Link href={`${base}/services`} className="corporate-home-btn corporate-home-btn--ghost">
               {t('corporate.ctaPlatform')}
             </Link>
           </div>

@@ -15,6 +15,22 @@
   gap: 1.75rem;
 }
 
+/* Calm, editorial stack: bold heading + 18px body, airy spacing (e.g. App Development) */
+.apimstec-page-body--stacked-prose {
+  gap: clamp(2rem, 5vw, 3rem);
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 0.35rem;
+}
+
+.apimstec-page-cta--stacked-prose {
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: clamp(1rem, 3vw, 2rem);
+}
+
 .apimstec-page-section h2 {
   margin: 0 0 0.5rem;
   font-size: 1.15rem;
@@ -25,9 +41,19 @@
 
 .apimstec-page-section p {
   margin: 0;
-  font-size: 1rem;
+  font-size: 18px;
   line-height: 1.65;
   color: #3f3f46;
+}
+
+.apimstec-page-section.apimstec-page-section--stacked-prose h2 {
+  font-size: clamp(1.2rem, 2.2vw, 1.4rem);
+  margin: 0 0 0.65rem;
+  letter-spacing: -0.025em;
+}
+
+.apimstec-page-section.apimstec-page-section--stacked-prose p {
+  color: #475569;
 }
 
 .apimstec-page-append {

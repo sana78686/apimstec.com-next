@@ -1,0 +1,71 @@
+/* Centered column with Marketplace / Contact — aligns hero copy with .site-breadcrumbs */
+.site-marketing-shell {
+  max-width: var(--content-max-width, 1200px);
+  margin: 0 auto;
+  padding: 0 var(--content-padding-x, 1.5rem) 3rem;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+/* Shell already supplies horizontal inset; avoids double padding vs breadcrumb text */
+.site-marketing-shell .apimstec-site-hero {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.site-marketing-shell .blog-list-page-body {
+  padding: 2rem 0 2.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.site-marketing-shell .cms-page-legal-below,
+.site-marketing-shell .cms-blog-below,
+.site-marketing-shell .cms-page-dynamic-below {
+  max-width: none;
+  margin: 0;
+  padding: 2rem 0 2.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.site-marketing-shell .blog-list-footer {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.site-marketing-shell .legal-content-body,
+.site-marketing-shell .cms-blog-content {
+  background: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  padding: 2rem 2rem 2.25rem;
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
+}
+
+.site-marketing-shell .cms-page-footer {
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .site-marketing-shell {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .site-marketing-shell .blog-list-page-body {
+    padding: 1.25rem 0 2rem;
+  }
+
+  .site-marketing-shell .legal-content-body,
+  .site-marketing-shell .cms-blog-content {
+    padding: 1.35rem 1.25rem 1.5rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .site-marketing-shell .blog-list-page-body {
+    padding: 1rem 0 1.5rem;
+  }
+}

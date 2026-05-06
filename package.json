@@ -19,6 +19,7 @@
   "dependencies": {
     "bootstrap": "^5.3.8",
     "next": "15.5.15",
+    "nodemailer": "^6.10.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
@@ -28,6 +29,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@types/node": "^20",
+    "@types/nodemailer": "^6.4.23",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",

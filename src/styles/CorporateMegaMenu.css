@@ -44,7 +44,7 @@
 
 .corporate-mega-inner {
   display: grid;
-  grid-template-columns: minmax(140px, 200px) 1fr;
+  grid-template-columns: 200px 1fr;
   gap: 0;
   min-height: 200px;
 }
@@ -53,6 +53,33 @@
   padding: 1.25rem 1rem;
   border-right: 1px solid var(--border-light, #e8e8e8);
   background: #fafbfc;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.corporate-mega-overview.corporate-mega-overview--with-categories {
+  margin-bottom: 0.85rem;
+}
+
+button.corporate-mega-sidebar-tab {
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  max-width: 100%;
+  font-family: inherit;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.corporate-mega-overview.corporate-mega-overview--active {
+  background: #e2e8f0;
+  color: var(--accent-primary, #0066b3);
+}
+
+.corporate-mega-overview.corporate-mega-overview--active:hover {
+  background: #dbe4ee;
+  color: var(--accent-primary, #0066b3);
 }
 
 .corporate-mega-overview {
@@ -60,6 +87,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   padding: 0.65rem 0.85rem;
   border-radius: 8px;
   font-size: 0.875rem;
@@ -70,12 +100,20 @@
   transition: background 0.15s ease, color 0.15s ease;
 }
 
+.corporate-mega-overview > span:first-of-type {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  line-height: 1.25;
+}
+
 .corporate-mega-overview:hover {
   background: #e2e8f0;
   color: var(--accent-primary, #0066b3);
 }
 
 .corporate-mega-overview-chevron {
+  flex-shrink: 0;
   font-size: 1rem;
   opacity: 0.65;
   font-weight: 400;

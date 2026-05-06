@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTranslation } from '@/i18n/useTranslation'
 import { usePathLang } from '@/hooks/usePathLang'
-import { buildCompressPdfBreadcrumbItems } from '@/utils/breadcrumbTrail'
+import { buildCompressPdfBreadcrumbItems, stripLocalePrefix } from '@/utils/breadcrumbTrail'
 import './Breadcrumbs.css'
 
 export default function Breadcrumbs() {
@@ -13,6 +13,14 @@ export default function Breadcrumbs() {
   const pathname = usePathname() || '/'
   const t = useTranslation(lang)
   const items = useMemo(() => buildCompressPdfBreadcrumbItems(pathname, t), [pathname, t])
+
+  /* Breadcrumb renders inside hero on solution / service / hosting detail pages & contact */
+  const { rest } = stripLocalePrefix(pathname)
+  if (/^\/solutions\/[^/]+$/.test(rest)) return null
+  if (/^\/services\/[^/]+$/.test(rest)) return null
+  if (/^\/hosting\/[^/]+$/.test(rest)) return null
+  if (rest === '/hosting') return null
+  if (rest === '/contact') return null
 
   if (!items?.length) return null
 

@@ -5,10 +5,13 @@ import Link from 'next/link'
 import { useTranslation } from '@/i18n/useTranslation'
 import { getContactSettings, submitContactForm } from '@/lib/cms-client'
 import JsonLd from '@/components/JsonLd'
-import ApimstecSiteHero from '@/components/marketing/ApimstecSiteHero'
+import ContactHeroClient from '@/components/marketing/ContactHeroClient'
 import { getPreferredLang, supportedLangs, langPrefix } from '@/i18n/translations'
 import { usePathLang } from '@/hooks/usePathLang'
+import { SUPPORT_EMAIL, resolveContactAddress, resolveContactPhones, telHrefFromDisplay } from '@/config/site'
 import '@/styles/ContactPage.css'
+
+const CONTACT_SUBJECT_DEFAULT = 'Website contact form'
 
 export default function ContactPageClient() {
   const lang = usePathLang()
@@ -22,9 +25,10 @@ export default function ContactPageClient() {
   const [sentSummary, setSentSummary] = useState(null)
   const [formError, setFormError] = useState('')
   const [form, setForm] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
-    subject: '',
+    phone: '',
     message: '',
     accepts_terms: false,
   })
@@ -42,25 +46,12 @@ export default function ContactPageClient() {
       .finally(() => setLoading(false))
   }, [localeForApi])
 
-  const subjectOptions = [
-    { value: '', label: t('contact.chooseSubject') },
-    { value: 'general', label: t('contact.subjectGeneral') },
-    { value: 'support', label: t('contact.subjectSupport') },
-    { value: 'feedback', label: t('contact.subjectFeedback') },
-    { value: 'other', label: t('contact.subjectOther') },
-  ]
-
-  function subjectLabelFor(value) {
-    const opt = subjectOptions.find((o) => o.value === value)
-    return opt?.label || value || t('contact.subjectGeneral')
-  }
-
   function contactDetailsVisible(s) {
     if (!s || typeof s !== 'object') return false
-    const e = String(s.contact_email ?? '').trim()
-    const p = String(s.contact_phone ?? '').trim()
-    const a = String(s.contact_address ?? '').trim()
-    return Boolean(e || p || a)
+    const e = String(s.contact_email ?? '').trim() || SUPPORT_EMAIL
+    const p = resolveContactPhones(s.contact_phone)
+    const a = resolveContactAddress(s.contact_address)
+    return Boolean(e || p.length || a)
   }
 
   function handleChange(e) {
@@ -75,27 +66,49 @@ export default function ContactPageClient() {
       setFormError(t('contact.errorTerms'))
       return
     }
+    const firstName = form.firstName.trim()
+    const lastName = form.lastName.trim()
+    if (!firstName || !lastName) {
+      setFormError(t('contact.errorBothNames'))
+      return
+    }
+    const fullName = `${firstName} ${lastName}`.trim()
     setFormError('')
     setSubmitting(true)
     try {
-      const name = form.name.trim()
       const email = form.email.trim()
-      const subjectVal = form.subject || 'general'
-      const subjectText = subjectLabelFor(subjectVal)
+      const phone = form.phone.trim()
       const message = form.message.trim()
+      const bodyParts = []
+      if (phone) bodyParts.push(`Phone: ${phone}`)
+      bodyParts.push(message)
+      const composedMessage = bodyParts.join('\n\n')
       await submitContactForm(
         {
-          name,
+          name: fullName.slice(0, 200),
           email,
-          subject: subjectText,
-          message,
+          subject: CONTACT_SUBJECT_DEFAULT,
+          message: composedMessage,
           accepts_terms: true,
         },
         localeForApi,
       )
-      setSentSummary({ name, email, subject: subjectText, message })
+      setSentSummary({
+        firstName,
+        lastName,
+        email,
+        phone,
+        message,
+      })
       setSubmitSuccess(true)
-      setForm({ name: '', email: '', subject: '', message: '', accepts_terms: false })
+      setForm({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        message: '',
+        accepts_terms: false,
+      })
     } catch (err) {
       const msg = err.message || t('contact.errorSend')
       setFormError(msg)
@@ -105,6 +118,9 @@ export default function ContactPageClient() {
   }
 
   const lp = langPrefix(lang)
+  const emailDisplay = String(settings?.contact_email ?? '').trim() || SUPPORT_EMAIL
+  const phones = settings ? resolveContactPhones(settings.contact_phone) : []
+  const addressLine = settings ? resolveContactAddress(settings.contact_address) : ''
 
   if (loading) {
     return (
@@ -126,198 +142,248 @@ export default function ContactPageClient() {
   }
 
   return (
-    <article className="contact-page">
+    <article className="contact-page contact-page--split">
       <JsonLd data={settings?.json_ld} />
-      <ApimstecSiteHero
-        bleed
-        tint="blue"
-        kicker={t('contact.pageKicker')}
-        title={t('contact.title')}
-        subtitle={t('contact.intro')}
-        titleId="contact-hero-title"
-      />
-      <div className="contact-page-grid wrap">
-        <div className="contact-page-intro">
-          <div className="contact-page-details" aria-label={t('contact.detailsHeading')}>
-            {contactDetailsVisible(settings) ? (
-              <ul className="contact-details-list">
-                {String(settings.contact_email ?? '').trim() !== '' && (
-                  <li className="contact-details-item">
-                    <span className="contact-details-label">{t('contact.email')}</span>
-                    <a
-                      className="contact-details-value contact-details-link"
-                      href={`mailto:${String(settings.contact_email).trim()}`}
-                    >
-                      {String(settings.contact_email).trim()}
-                    </a>
-                  </li>
-                )}
-                {String(settings.contact_phone ?? '').trim() !== '' && (
-                  <li className="contact-details-item">
-                    <span className="contact-details-label">{t('contact.phone')}</span>
-                    <a
-                      className="contact-details-value contact-details-link"
-                      href={`tel:${String(settings.contact_phone).replace(/\s+/g, '')}`}
-                    >
-                      {String(settings.contact_phone).trim()}
-                    </a>
-                  </li>
-                )}
-                {String(settings.contact_address ?? '').trim() !== '' && (
-                  <li className="contact-details-item">
-                    <span className="contact-details-label">{t('contact.address')}</span>
-                    <span className="contact-details-value contact-details-multiline">
-                      {String(settings.contact_address).trim()}
+      <div className="contact-page-shell contact-page-shell--hero-flush">
+        <ContactHeroClient title={t('contact.title')} subtitle={t('contact.intro')} crumbPath="/contact" />
+      </div>
+
+      <div className="contact-page-board">
+        <div className="contact-page-shell contact-page-shell--board">
+          <div className="contact-page-grid contact-page-grid--split">
+            <div className="contact-page-sidebar">
+              <h2 className="contact-sidebar-heading">{t('contact.detailsHeading')}</h2>
+              {contactDetailsVisible(settings) ? (
+                <ul className="contact-info-rows">
+                  {phones.length > 0
+                    ? phones.map((phoneDisplay) => (
+                        <li key={phoneDisplay} className="contact-info-row">
+                          <span className="contact-info-icon contact-info-icon--phone" aria-hidden>
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"
+                              />
+                            </svg>
+                          </span>
+                          <div>
+                            <span className="contact-info-label">{t('contact.phone')}</span>
+                            <a className="contact-info-value" href={telHrefFromDisplay(phoneDisplay)}>
+                              {phoneDisplay}
+                            </a>
+                          </div>
+                        </li>
+                      ))
+                    : null}
+                  <li className="contact-info-row">
+                    <span className="contact-info-icon contact-info-icon--mail" aria-hidden>
+                      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16v12H4z M4 8l8 5 8-5" />
+                      </svg>
                     </span>
+                    <div>
+                      <span className="contact-info-label">{t('contact.email')}</span>
+                      <a className="contact-info-value" href={`mailto:${emailDisplay}`}>
+                        {emailDisplay}
+                      </a>
+                    </div>
                   </li>
-                )}
-              </ul>
-            ) : (
-              <p className="contact-page-no-details">{t('contact.noDetails')}</p>
-            )}
+                  {addressLine ? (
+                    <li className="contact-info-row">
+                      <span className="contact-info-icon contact-info-icon--pin" aria-hidden>
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 21s7-4.35 7-10a7 7 0 10-14 0c0 5.65 7 10 7 10z" />
+                          <circle cx="12" cy="11" r="2.5" />
+                        </svg>
+                      </span>
+                      <div>
+                        <span className="contact-info-label">{t('contact.address')}</span>
+                        <span className="contact-info-value contact-info-value--multiline">{addressLine}</span>
+                      </div>
+                    </li>
+                  ) : null}
+                </ul>
+              ) : (
+                <p className="contact-page-no-details">{t('contact.noDetails')}</p>
+              )}
+
+              <div className="contact-why-block">
+                <h3 className="contact-why-heading">Why choose Apimstec</h3>
+                <ul className="contact-why-list">
+                  <li>Innovation-first engineering without buzzword fog</li>
+                  <li>Security-aware workflows—from apps to hosting handoffs</li>
+                  <li>Quality checkpoints before releases hit real users</li>
+                  <li>Responsive support when production timelines tighten</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="contact-form-card">
+              {submitSuccess ? (
+                <div className="contact-form-success" role="status">
+                  <p className="contact-form-success-text">{t('contact.successMessage')}</p>
+                  {sentSummary && (
+                    <dl className="contact-form-sent-summary">
+                      <div className="contact-form-sent-row">
+                        <dt>Name</dt>
+                        <dd>{[sentSummary.firstName, sentSummary.lastName].filter(Boolean).join(' ') || '—'}</dd>
+                      </div>
+                      <div className="contact-form-sent-row">
+                        <dt>{t('contact.yourEmail')}</dt>
+                        <dd>{sentSummary.email}</dd>
+                      </div>
+                      {sentSummary.phone ? (
+                        <div className="contact-form-sent-row">
+                          <dt>{t('contact.phone')}</dt>
+                          <dd>{sentSummary.phone}</dd>
+                        </div>
+                      ) : null}
+                      <div className="contact-form-sent-row">
+                        <dt>{t('contact.message')}</dt>
+                        <dd className="contact-form-sent-message">{sentSummary.message}</dd>
+                      </div>
+                    </dl>
+                  )}
+                  <button
+                    type="button"
+                    className="contact-form-success-again"
+                    onClick={() => {
+                      setSubmitSuccess(false)
+                      setSentSummary(null)
+                    }}
+                  >
+                    {t('contact.sendAnother')}
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <h2 className="contact-form-card-title">Let&apos;s connect!</h2>
+                  <p className="contact-form-card-sub">Do you have any questions? Feel free to contact us.</p>
+                  <form className="contact-form contact-form--card" onSubmit={handleSubmit} noValidate>
+                    <div className="contact-form-row contact-form-row--half">
+                      <div className="contact-form-field">
+                        <label className="contact-form-label" htmlFor="contact-first-name">
+                          First name <span className="contact-form-required">*</span>
+                        </label>
+                        <input
+                          id="contact-first-name"
+                          type="text"
+                          name="firstName"
+                          value={form.firstName}
+                          onChange={handleChange}
+                          className="contact-form-input"
+                          placeholder="First name"
+                          autoComplete="given-name"
+                        />
+                      </div>
+                      <div className="contact-form-field">
+                        <label className="contact-form-label" htmlFor="contact-last-name">
+                          Last name <span className="contact-form-required">*</span>
+                        </label>
+                        <input
+                          id="contact-last-name"
+                          type="text"
+                          name="lastName"
+                          value={form.lastName}
+                          onChange={handleChange}
+                          className="contact-form-input"
+                          placeholder="Last name"
+                          autoComplete="family-name"
+                        />
+                      </div>
+                    </div>
+                    <div className="contact-form-field">
+                      <label className="contact-form-label" htmlFor="contact-email">
+                        {t('contact.yourEmail')} <span className="contact-form-required">*</span>
+                      </label>
+                      <input
+                        id="contact-email"
+                        type="email"
+                        name="email"
+                        value={form.email}
+                        onChange={handleChange}
+                        className="contact-form-input"
+                        placeholder={t('contact.yourEmail')}
+                        required
+                        autoComplete="email"
+                      />
+                    </div>
+                    <div className="contact-form-field">
+                      <label className="contact-form-label" htmlFor="contact-phone">
+                        Phone number
+                      </label>
+                      <input
+                        id="contact-phone"
+                        type="tel"
+                        name="phone"
+                        value={form.phone}
+                        onChange={handleChange}
+                        className="contact-form-input"
+                        placeholder="Phone number"
+                        autoComplete="tel"
+                      />
+                    </div>
+                    <div className="contact-form-field">
+                      <label className="contact-form-label" htmlFor="contact-message">
+                        {t('contact.message')} <span className="contact-form-required">*</span>
+                      </label>
+                      <textarea
+                        id="contact-message"
+                        name="message"
+                        value={form.message}
+                        onChange={handleChange}
+                        className="contact-form-textarea"
+                        placeholder={t('contact.writeMessage')}
+                        required
+                        rows={5}
+                      />
+                    </div>
+                    <div className="contact-form-row contact-form-consent">
+                      <label className="contact-form-checkbox-label">
+                        <input
+                          type="checkbox"
+                          name="accepts_terms"
+                          checked={form.accepts_terms}
+                          onChange={handleChange}
+                          className="contact-form-checkbox"
+                        />
+                        <span>
+                          I agree to the{' '}
+                          <Link href={`${lp}/legal/terms`} className="contact-form-legal-link">
+                            {t('contact.termsAndConditions')}
+                          </Link>{' '}
+                          and{' '}
+                          <Link href={`${lp}/legal/privacy-policy`} className="contact-form-legal-link">
+                            {t('contact.legalPrivacy')}
+                          </Link>
+                          .
+                        </span>
+                      </label>
+                    </div>
+                    {formError ? (
+                      <p className="contact-form-error" role="alert">
+                        {formError}
+                      </p>
+                    ) : null}
+                    <button type="submit" className="contact-form-submit" disabled={submitting}>
+                      {submitting ? 'Sending…' : t('contact.sendMessage')}
+                    </button>
+                  </form>
+                </>
+              )}
+            </div>
           </div>
         </div>
-        <div className="contact-page-form-wrap">
-          {submitSuccess ? (
-            <div className="contact-form-success" role="status">
-              <p className="contact-form-success-text">{t('contact.successMessage')}</p>
-              {sentSummary && (
-                <dl className="contact-form-sent-summary">
-                  <div className="contact-form-sent-row">
-                    <dt>{t('contact.yourName')}</dt>
-                    <dd>{sentSummary.name}</dd>
-                  </div>
-                  <div className="contact-form-sent-row">
-                    <dt>{t('contact.yourEmail')}</dt>
-                    <dd>{sentSummary.email}</dd>
-                  </div>
-                  <div className="contact-form-sent-row">
-                    <dt>{t('contact.subject')}</dt>
-                    <dd>{sentSummary.subject}</dd>
-                  </div>
-                  <div className="contact-form-sent-row">
-                    <dt>{t('contact.message')}</dt>
-                    <dd className="contact-form-sent-message">{sentSummary.message}</dd>
-                  </div>
-                </dl>
-              )}
-              <button
-                type="button"
-                className="contact-form-success-again"
-                onClick={() => {
-                  setSubmitSuccess(false)
-                  setSentSummary(null)
-                }}
-              >
-                {t('contact.sendAnother')}
-              </button>
-            </div>
-          ) : (
-            <form className="contact-form" onSubmit={handleSubmit} noValidate>
-              <div className="contact-form-row">
-                <label className="contact-form-label" htmlFor="contact-name">
-                  {t('contact.yourName')} <span className="contact-form-required">*</span>
-                </label>
-                <input
-                  id="contact-name"
-                  type="text"
-                  name="name"
-                  value={form.name}
-                  onChange={handleChange}
-                  className="contact-form-input"
-                  placeholder={t('contact.yourName')}
-                  required
-                  autoComplete="name"
-                />
-              </div>
-              <div className="contact-form-row">
-                <label className="contact-form-label" htmlFor="contact-email">
-                  {t('contact.yourEmail')} <span className="contact-form-required">*</span>
-                </label>
-                <input
-                  id="contact-email"
-                  type="email"
-                  name="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  className="contact-form-input"
-                  placeholder={t('contact.yourEmail')}
-                  required
-                  autoComplete="email"
-                />
-              </div>
-              <div className="contact-form-row">
-                <label className="contact-form-label" htmlFor="contact-subject">
-                  {t('contact.subject')} <span className="contact-form-required">*</span>
-                </label>
-                <select
-                  id="contact-subject"
-                  name="subject"
-                  value={form.subject}
-                  onChange={handleChange}
-                  className="contact-form-select"
-                  required
-                >
-                  {subjectOptions.map((opt) => (
-                    <option key={opt.value || 'empty'} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="contact-form-row">
-                <label className="contact-form-label" htmlFor="contact-message">
-                  {t('contact.message')} <span className="contact-form-required">*</span>
-                </label>
-                <textarea
-                  id="contact-message"
-                  name="message"
-                  value={form.message}
-                  onChange={handleChange}
-                  className="contact-form-textarea"
-                  placeholder={t('contact.writeMessage')}
-                  required
-                  rows={5}
-                />
-              </div>
-              <div className="contact-form-row contact-form-consent">
-                <label className="contact-form-checkbox-label">
-                  <input
-                    type="checkbox"
-                    name="accepts_terms"
-                    checked={form.accepts_terms}
-                    onChange={handleChange}
-                    className="contact-form-checkbox"
-                  />
-                  <span>
-                    {t('contact.iAccept')}{' '}
-                    <Link href={`${lp}/legal/terms`} className="contact-form-legal-link">
-                      {t('contact.termsAndConditions')}
-                    </Link>
-                    {' and '}
-                    <Link href={`${lp}/legal/privacy-policy`} className="contact-form-legal-link">
-                      {t('contact.legalPrivacy')}
-                    </Link>
-                  </span>
-                </label>
-              </div>
-              {formError && (
-                <p className="contact-form-error" role="alert">
-                  {formError}
-                </p>
-              )}
-              <button type="submit" className="contact-form-submit" disabled={submitting}>
-                {submitting ? 'Sending…' : t('contact.sendMessage')}
-              </button>
-            </form>
-          )}
-        </div>
       </div>
-      <footer className="contact-page-footer wrap">
-        <Link href={`${lp}/`} className="contact-page-back">
-          ← {t('contact.backHome')}
-        </Link>
-      </footer>
+
+      <div className="contact-page-shell">
+        <footer className="contact-page-footer">
+          <Link href={`${lp}/`} className="contact-page-back">
+            ← {t('contact.backHome')}
+          </Link>
+        </footer>
+      </div>
     </article>
   )
 }

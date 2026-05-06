@@ -201,6 +201,7 @@ export default {
     successMessage: 'Pesan Anda telah terkirim. Kami akan segera menghubungi Anda.',
     errorSend: 'Tidak dapat mengirim pesan. Silakan coba lagi.',
     errorTerms: 'Anda harus menerima Syarat & Ketentuan serta Hukum & Privasi untuk mengirim formulir.',
+    errorBothNames: 'Harap isi nama depan dan nama belakang.',
     subjectGeneral: 'Pertanyaan umum',
     subjectSupport: 'Dukungan',
     subjectFeedback: 'Masukan',

@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Fragment } from 'react'
 import { supportedLangs, langOptions } from '@/i18n/translations'
 import { getCorporateSection, CORPORATE_MEGA_SECTION_KEYS } from '@/config/corporateMenuContent'
 import { ucWords } from '@/utils/ucWords'
@@ -14,7 +14,7 @@ type TFn = (key: string, params?: Record<string, string | number>) => string
 function megaSectionLabel(key: string, t: TFn) {
   const keys: Record<string, string> = {
     platform: 'nav.platform',
-    consultancy: 'nav.consultancy',
+    hosting: 'nav.hosting',
     solutions: 'nav.solutions',
     about: 'nav.aboutUs',
   }
@@ -27,6 +27,18 @@ type Props = {
   lang: string
   t: TFn
   headerNavTree?: CmsNavTreeNode[]
+}
+
+/** Mega-menu category rows from `corporateMenuContent` (JS module — annotate here for strict TS). */
+type CorporateMegaNavItem = {
+  slug: string
+  title: string
+}
+
+type CorporateMegaNavCategory = {
+  id: string
+  label: string
+  items?: CorporateMegaNavItem[]
 }
 
 /**
@@ -123,22 +135,43 @@ export default function MobileNav({ open, onClose, lang, t, headerNavTree = [] }
                 </button>
                 {expanded ? (
                   <ul className="mobile-nav-sub">
-                    <li>
-                      <a href={`/${data.basePath}`} className="mobile-nav-sub-link" onClick={onClose}>
-                        {data.overviewLabel}
-                      </a>
-                    </li>
-                    {(data.items || []).map((item: { slug: string; title: string }) => (
-                      <li key={item.slug}>
-                        <a
-                          href={`/${data.basePath}/${item.slug}`}
-                          className="mobile-nav-sub-link"
-                          onClick={onClose}
-                        >
-                          {item.title}
+                    {data.overviewLabel ? (
+                      <li>
+                        <a href={`/${data.basePath}`} className="mobile-nav-sub-link" onClick={onClose}>
+                          {data.overviewLabel}
                         </a>
                       </li>
-                    ))}
+                    ) : null}
+                    {data.categories?.length
+                      ? data.categories.map((cat: CorporateMegaNavCategory) => (
+                          <Fragment key={cat.id}>
+                            <li className="mobile-nav-category-label" role="presentation">
+                              {cat.label}
+                            </li>
+                            {(cat.items || []).map((item: CorporateMegaNavItem) => (
+                              <li key={`${cat.id}-${item.slug}`}>
+                                <a
+                                  href={`/${data.basePath}/${item.slug}`}
+                                  className="mobile-nav-sub-link"
+                                  onClick={onClose}
+                                >
+                                  {item.title}
+                                </a>
+                              </li>
+                            ))}
+                          </Fragment>
+                        ))
+                      : (data.items || []).map((item: CorporateMegaNavItem) => (
+                          <li key={item.slug}>
+                            <a
+                              href={`/${data.basePath}/${item.slug}`}
+                              className="mobile-nav-sub-link"
+                              onClick={onClose}
+                            >
+                              {item.title}
+                            </a>
+                          </li>
+                        ))}
                   </ul>
                 ) : null}
               </div>

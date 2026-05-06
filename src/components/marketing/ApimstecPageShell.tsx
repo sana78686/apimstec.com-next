@@ -11,6 +11,10 @@ type Props = {
   contactHref?: string
   contactLabel?: string
   children?: ReactNode
+  /**
+   * `stacked-prose` — generous vertical rhythm + readable measure for long-form blocks (heading + paragraph stacks).
+   */
+  bodyVariant?: 'default' | 'stacked-prose'
 }
 
 /**
@@ -21,8 +25,13 @@ export default function ApimstecPageShell({
   children,
   contactHref = '/contact',
   contactLabel = 'Contact us',
+  bodyVariant = 'default',
 }: Props) {
   const tint = page.heroTint as ApimstecSiteHeroTint
+  const bodyClass =
+    bodyVariant === 'stacked-prose'
+      ? 'apimstec-page-body apimstec-page-body--stacked-prose'
+      : 'apimstec-page-body'
 
   return (
     <article className="apimstec-page">
@@ -33,16 +42,29 @@ export default function ApimstecPageShell({
         subtitle={page.subtitle}
         titleId="apimstec-hero-title"
       />
-      <div className="apimstec-page-body">
+      <div className={bodyClass}>
         {page.sections.map((s, i) => (
-          <section key={i} className="apimstec-page-section">
+          <section
+            key={i}
+            className={
+              bodyVariant === 'stacked-prose'
+                ? 'apimstec-page-section apimstec-page-section--stacked-prose'
+                : 'apimstec-page-section'
+            }
+          >
             <h2>{s.heading}</h2>
             <p>{s.body}</p>
           </section>
         ))}
       </div>
       {children ? <div className="apimstec-page-append">{children}</div> : null}
-      <div className="apimstec-page-cta">
+      <div
+        className={
+          bodyVariant === 'stacked-prose'
+            ? 'apimstec-page-cta apimstec-page-cta--stacked-prose'
+            : 'apimstec-page-cta'
+        }
+      >
         <Link href={contactHref}>{contactLabel} →</Link>
       </div>
     </article>

@@ -162,6 +162,11 @@ footer.footer.footer--dark .footer-social-icon {
   line-height: 1;
 }
 
+footer.footer.footer--dark .footer-social-svg {
+  display: block;
+  flex-shrink: 0;
+}
+
 /* Optional CMS row */
 footer.footer.footer--dark .footer-cms-row {
   margin-top: 2rem;
